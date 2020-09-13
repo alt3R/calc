@@ -57,41 +57,33 @@ public class Solver {
         return new int[]{ roman.get(firstNumber), roman.get(secondNumber) };
     }
 
-    public static String convertToRoman(int number)
+    public static String convertToRoman(int number) throws Exception
     {
         String result;
-        HashMap<Integer, String> arabic = new HashMap<>() {
-            {
-                put(1, "I");
-                put(2, "II");
-                put(3, "III");
-                put(4, "IV");
-                put(5, "V");
-                put(6, "VI");
-                put(7, "VII");
-                put(8, "VIII");
-                put(9, "IX");
-                put(10, "X");
-                put(11, "XI");
-                put(12, "XII");
-                put(13, "XIII");
-                put(14, "XIV");
-                put(15, "XV");
-                put(16, "XVI");
-                put(17, "XVII");
-                put(18, "XVIII");
-                put(19, "XIX");
-                put(20, "XX");
-            }
-        };
-        if (number >= 0) {
-            result = arabic.get(number);
+        if (number > 0) {
+            result = intToRoman(number);
         } else {
-            String formatNumber = Integer.toString(number).substring(1);
-            String romanNumber = arabic.get(Integer.parseInt(formatNumber));
-            result = "-" + romanNumber;
+            throw new Exception("Error! Roman numerals do not include zero or negative numbers");
         }
         return result;
+    }
+
+    private static String intToRoman(int num)
+    {
+        String[] m = {"", "M", "MM", "MMM"};
+        String[] c = {"", "C", "CC", "CCC", "CD", "D",
+                "DC", "DCC", "DCCC", "CM"};
+        String[] x = {"", "X", "XX", "XXX", "XL", "L",
+                "LX", "LXX", "LXXX", "XC"};
+        String[] i = {"", "I", "II", "III", "IV", "V",
+                "VI", "VII", "VIII", "IX"};
+
+        String thousands = m[num/1000];
+        String hundreds = c[(num%1000)/100];
+        String tens = x[(num%100)/10];
+        String ones = i[num%10];
+
+        return thousands + hundreds + tens + ones;
     }
 
     private static int computation(String sign, int[] numbers) throws Exception
